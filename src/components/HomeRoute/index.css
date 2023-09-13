@@ -1,0 +1,23 @@
+.un-order-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+}
+.main-heading {
+  font-size: 28px;
+  color: #1e293b;
+  font-weight: 600;
+  font-family: 'Roboto';
+  margin-left: 80px;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
