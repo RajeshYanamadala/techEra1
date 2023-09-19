@@ -8,7 +8,7 @@ const CourseItem = props => {
   return (
     <Link to={`/courses/${id}`} className="course-link">
       <li className="list-items">
-        <img src={logoUrl} alt="name" className="course-image" />
+        <img src={logoUrl} alt={name} className="course-image" />
         <p className="name">{name}</p>
       </li>
     </Link>

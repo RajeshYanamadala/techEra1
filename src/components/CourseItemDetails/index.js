@@ -8,7 +8,7 @@ const apiStatusContext = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
-  inprogress: 'IN_PROGRESS',
+  process: 'PROCESS',
 }
 
 class CourseItemDetails extends Component {
@@ -19,25 +19,24 @@ class CourseItemDetails extends Component {
   }
 
   componentDidMount() {
-    this.setState({apiStatus: apiStatusContext.inprogress})
-    setTimeout(() => {
-      this.renderCourseDetails()
-    }, 2000)
+    this.renderCourseDetails()
   }
 
   renderCourseDetails = async () => {
     const {match} = this.props
     const {params} = match
     const {id} = params
-
+    this.setState({apiStatus: apiStatusContext.Loader})
     const apiUrl = `https://apis.ccbp.in/te/courses/${id}`
     const options = {
       method: 'GET',
     }
 
     const response = await fetch(apiUrl, options)
+
     if (response.ok) {
       const data = await response.json()
+      console.log(data)
       const courseDetailsData = {
         id: data.course_details.id,
         name: data.course_details.name,
@@ -50,7 +49,7 @@ class CourseItemDetails extends Component {
         apiStatus: apiStatusContext.success,
       })
     }
-    if (response.status === 404) {
+    if (response.status === 401) {
       this.setState({apiStatus: apiStatusContext.failure})
     }
   }
@@ -73,9 +72,6 @@ class CourseItemDetails extends Component {
   onClickFailureView = () => {
     this.setState({retry: true})
     this.renderCourseDetails()
-    setTimeout(() => {
-      this.setState({retry: false})
-    }, 1000)
   }
 
   renderFailureView = () => {
@@ -89,9 +85,9 @@ class CourseItemDetails extends Component {
               alt="failure view"
               className="failure-image"
             />
-            <h1 className="failure-heading">Oops! Something want Wrong</h1>
+            <h1 className="failure-heading">Oops! Something Went Wrong</h1>
             <p className="error-paragraph">
-              We cannot seem to find the page are looking for
+              We cannot seem to find the page you are looking for
             </p>
 
             <div>
@@ -110,8 +106,8 @@ class CourseItemDetails extends Component {
   }
 
   renderLoaderView = () => (
-    <div data-testid="loader">
-      <Loader height={30} width={30} type="ThreeDots" color="#4656a1" />
+    <div data-testid="loader" className="loader">
+      <Loader type="ThreeDots" color="#4656a1" width={50} height={30} />
     </div>
   )
 

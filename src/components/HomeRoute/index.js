@@ -20,10 +20,11 @@ class HomeRoute extends Component {
   }
 
   componentDidMount() {
-    this.setState({apiStatus: apiInitialStatus.process})
-    setTimeout(() => {
-      this.renderFetchCourseData()
-    }, 1000)
+    this.renderFetchCourseData()
+  }
+
+  onClickFailureView = () => {
+    this.renderFetchCourseData()
   }
 
   renderFetchCourseData = async () => {
@@ -31,9 +32,9 @@ class HomeRoute extends Component {
     const options = {
       method: 'GET',
     }
-
+    this.setState({apiStatus: apiInitialStatus.process})
     const response = await fetch(apiUrl, options)
-    console.log(response)
+
     if (response.ok) {
       const data = await response.json()
       const courseData = data.courses.map(eachCourse => ({
@@ -46,7 +47,7 @@ class HomeRoute extends Component {
         apiStatus: apiInitialStatus.success,
       })
     }
-    if (response.status === 400) {
+    if (response.status === 401) {
       this.setState({apiStatus: apiInitialStatus.failure})
     }
   }
@@ -77,9 +78,9 @@ class HomeRoute extends Component {
         src="https://assets.ccbp.in/frontend/react-js/tech-era/failure-img.png"
         alt=" failure view"
       />
-      <h1 className="failure-heading">Oops! Something want Wrong</h1>
+      <h1 className="failure-heading">Oops! Something Went Wrong</h1>
       <p className="error-paragraph">
-        We cannot seem to find the page are looking for
+        We cannot seem to find the page you are looking for
       </p>
       <div>
         <button
